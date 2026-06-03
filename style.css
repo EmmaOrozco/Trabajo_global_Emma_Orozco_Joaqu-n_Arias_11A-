@@ -12,3 +12,5 @@ canvas{width:100%;border:2px solid pink;border-radius:15px;background:white}
 table{border-collapse:collapse;width:100%}
 th,td{border:1px solid pink;padding:8px;text-align:center}
 @media(max-width:900px){.grid{grid-template-columns:1fr}}
+
+input[type=range]{width:100%;accent-color:#ff69b4;margin:6px 0;}

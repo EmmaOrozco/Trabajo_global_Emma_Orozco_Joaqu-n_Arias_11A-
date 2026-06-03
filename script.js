@@ -1,4 +1,19 @@
 
+function syncSliderAndInput(sliderId,inputId){
+const s=document.getElementById(sliderId);
+const i=document.getElementById(inputId);
+if(!s||!i) return;
+s.addEventListener('input',()=>{i.value=s.value;syncSliderAndInput('mu0Slider','mu0');
+syncSliderAndInput('xbarSlider','xbar');
+syncSliderAndInput('sdSlider','sd');
+syncSliderAndInput('nSlider','n');
+syncSliderAndInput('p0Slider','p0');
+syncSliderAndInput('phatSlider','phat');
+syncSliderAndInput('pnSlider','pn');
+manualCalc();});
+i.addEventListener('input',()=>{s.value=i.value;manualCalc();});
+}
+
 function erf(x){const s=x<0?-1:1;x=Math.abs(x);const a1=.254829592,a2=-.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,p=.3275911;const t=1/(1+p*x);const y=1-(((((a5*t+a4)*t+a3)*t+a2)*t+a1)*t*Math.exp(-x*x));return s*y}
 const cdf=x=>0.5*(1+erf(x/Math.sqrt(2)));
 const critical={0.01:2.576,0.05:1.96,0.10:1.645};
