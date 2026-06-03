@@ -1,17 +1,20 @@
 
 function syncSliderAndInput(sliderId,inputId){
-const s=document.getElementById(sliderId);
-const i=document.getElementById(inputId);
-if(!s||!i) return;
-s.addEventListener('input',()=>{i.value=s.value;syncSliderAndInput('mu0Slider','mu0');
-syncSliderAndInput('xbarSlider','xbar');
-syncSliderAndInput('sdSlider','sd');
-syncSliderAndInput('nSlider','n');
-syncSliderAndInput('p0Slider','p0');
-syncSliderAndInput('phatSlider','phat');
-syncSliderAndInput('pnSlider','pn');
-manualCalc();});
-i.addEventListener('input',()=>{s.value=i.value;manualCalc();});
+
+    const s=document.getElementById(sliderId);
+    const i=document.getElementById(inputId);
+
+    if(!s || !i) return;
+
+    s.addEventListener('input',()=>{
+        i.value=s.value;
+        manualCalc();
+    });
+
+    i.addEventListener('input',()=>{
+        s.value=i.value;
+        manualCalc();
+    });
 }
 
 function erf(x){const s=x<0?-1:1;x=Math.abs(x);const a1=.254829592,a2=-.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,p=.3275911;const t=1/(1+p*x);const y=1-(((((a5*t+a4)*t+a3)*t+a2)*t+a1)*t*Math.exp(-x*x));return s*y}
@@ -19,6 +22,16 @@ const cdf=x=>0.5*(1+erf(x/Math.sqrt(2)));
 const critical={0.01:2.576,0.05:1.96,0.10:1.645};
 
 document.addEventListener('DOMContentLoaded',()=>{
+
+syncSliderAndInput('mu0Slider','mu0');
+syncSliderAndInput('xbarSlider','xbar');
+syncSliderAndInput('sdSlider','sd');
+syncSliderAndInput('nSlider','n');
+
+syncSliderAndInput('p0Slider','p0');
+syncSliderAndInput('phatSlider','phat');
+syncSliderAndInput('pnSlider','pn');
+
 testType.onchange=()=>{
 meanInputs.style.display=testType.value==='mean'?'block':'none';
 propInputs.style.display=testType.value==='prop'?'block':'none';
@@ -90,12 +103,27 @@ function analyzeCSV(){
 const g=groupCol.value,v=valueCol.value;
 const groups={};
 dataRows.forEach(r=>{
-if(r[g]==null||r[v]==null||r[v]==='') return;
-(groups[r[g]]??=[]).push(+r[v]);
+
+    if(
+        r[g] == null ||
+        r[v] == null ||
+        r[v] === '' ||
+        r[v] === 'NA' ||
+        isNaN(Number(r[v]))
+    ){
+        return;
+    }
+
+    (groups[r[g]] ??= []).push(Number(r[v]));
 });
 const names=Object.keys(groups);
 if(names.length<2){csvResults.innerHTML='Need at least two groups';return;}
 const a=groups[names[0]],b=groups[names[1]];
+if(a.length < 2 || b.length < 2){
+    csvResults.innerHTML =
+        'Each group must contain at least 2 observations.';
+    return;
+}
 const ma=a.reduce((s,x)=>s+x,0)/a.length;
 const mb=b.reduce((s,x)=>s+x,0)/b.length;
 const sda=Math.sqrt(a.reduce((s,x)=>s+(x-ma)**2,0)/(a.length-1));
