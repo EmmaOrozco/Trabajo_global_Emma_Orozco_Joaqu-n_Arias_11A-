@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌸 Hypothesis Testing Studio</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="script.js" defer></script>
+</head>
+<body>
+<div class="container">
+<h1>🌸 Hypothesis Testing Studio 🌸</h1>
+<p class="subtitle">Grade 11 Global Economics - C8 & C9</p>
+
+<div class="card">
+<h2>Manual Hypothesis Testing (C8)</h2>
+<div class="grid">
+<div>
+<label>Test Type</label>
+<select id="testType"><option value="mean">Mean</option><option value="prop">Proportion</option></select>
+<label>Tail</label>
+<select id="tail"><option value="left">Left</option><option value="right">Right</option><option value="two">Two-Tailed</option></select>
+<label>Alpha</label>
+<select id="alpha"><option>0.01</option><option selected>0.05</option><option>0.10</option></select>
+<div id="meanInputs">
+<label>μ₀<input id="mu0" type="number" value="50"></label>
+<label>x̄<input id="xbar" type="number" value="55"></label>
+<label>σ<input id="sd" type="number" value="15"></label>
+<label>n<input id="n" type="number" value="100"></label>
+</div>
+<div id="propInputs" style="display:none">
+<label>p₀<input id="p0" type="number" step="0.01" value="0.50"></label>
+<label>p̂<input id="phat" type="number" step="0.01" value="0.60"></label>
+<label>n<input id="pn" type="number" value="100"></label>
+</div>
+<button id="calcBtn">Calculate</button>
+</div>
+<div>
+<canvas id="graph" width="800" height="320"></canvas>
+<div id="results"></div>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>CSV Analysis (C9)</h2>
+<input type="file" id="csvFile">
+<div id="csvControls"></div>
+<div id="csvResults"></div>
+</div>
+</div>
+</body>
+</html>
